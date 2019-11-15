@@ -13,4 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 list.files("../data")
 
+library(readr)
+read_csv()
+
 ```
