@@ -6,7 +6,7 @@ library(ggplot2)
 library(maps)
 
 # read in data
-denver <- read_csv("../data/homicide-data.csv") %>% 
+denver <- read_csv("./data/homicide-data.csv") %>% 
   filter(city == "Denver") %>% 
   select(lat, lon, disposition, victim_race)
 
@@ -22,8 +22,6 @@ denver_race
 denver_zip <- zctas(cb = TRUE, starts_with = 
                       c("802"), class = "sf")
 plot(denver_zip)
-
-race <- denver_zip
 
 # create map
 denver_crs <- denver_race %>% 
