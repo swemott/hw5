@@ -5,15 +5,33 @@ date: "11/6/2019"
 output: word_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(tigris)
+library(sf)
 ```
 
 ```{r}
+denver <- read_csv("../data/homicide-data.csv") %>% 
+  filter(city == "Denver") %>% 
+  unite(coordinates, lat, lon, sep = ",") %>% 
+  select(coordinates, disposition, victim_race)
 
-list.files("../data")
+denver_race <- denver %>% 
+  group_by(victim_race) %>% 
+  mutate(count = n()) %>% 
+  arrange(desc(count)) %>% 
+  ungroup() %>% 
+  filter(victim_race == c("Black", "White", "Hispanic"))
+denver_race
 
-library(readr)
-read_csv()
+denver_zip <- zctas(cb = TRUE, starts_with = c("800", "801", "802", "803", "806"))
+plot(denver_zip)
 
 ```
+
+
+  
+
+
