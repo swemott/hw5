@@ -16,7 +16,8 @@ denver_race <- denver %>%
   mutate(count = n()) %>% 
   arrange(desc(count)) %>% 
   ungroup() %>% 
-  filter(victim_race == c("Black", "White", "Hispanic"))
+  filter(victim_race == c("Black", "White", "Hispanic"))  
+
 denver_race
 
 denver_zip <- zctas(cb = TRUE, starts_with = 
@@ -35,5 +36,19 @@ zip_map <- ggplot() +
   geom_sf(data = denver_zip, color = "lightgray") +
   geom_sf(data = denver_crs, aes(color = factor(victim_race)))
 zip_map
+
+# facet into solved and unsolved
+denver_disp <- denver_race %>% 
+  mutate(disposition = factor(disposition, levels = c("Closed without arrest", 
+                                                      "Closed by arrest", 
+                                                      "Open/No arrest"),
+                              labels = c("solved", "solved", "unsolved")))
+denver_disp
+  mutate(fct_lump(disposition, n = 2)) %>% # convert dispositions to factors
+  count(disposition)
+  mutate(is_unsolved = !(disposition == "Closed by arrest"),
+         is_solved = (disposition == "Closed by arrest"))
+
+
 
 
