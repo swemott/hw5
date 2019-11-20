@@ -25,7 +25,7 @@ denver_zip <- zctas(cb = TRUE, starts_with =
 plot(denver_zip)
 
 # create map
-denver_crs <- denver_race %>% 
+denver_crs <- denver_disp %>% 
   filter(!is.na(lat)) %>% 
   st_as_sf(coords = c("lon", "lat")) %>% 
   st_set_crs(4269)
@@ -34,7 +34,9 @@ denver_crs
 # create plot 
 zip_map <- ggplot() +
   geom_sf(data = denver_zip, color = "lightgray") +
-  geom_sf(data = denver_crs, aes(color = factor(victim_race)))
+  geom_sf(data = denver_crs, aes(color = factor(victim_race), 
+                                 shape = disposition)) +
+            facet_wrap(~disposition, ncol =1)
 zip_map
 
 # facet into solved and unsolved
