@@ -61,3 +61,19 @@ denver_crs <- denver_disp %>%
   st_set_crs(4269)
 denver_crs
 ```
+```{r}
+
+# create plot of homicides overlayed on denver map
+zip_map <- ggplot() +
+  geom_sf(data = denver_zip, color = "lightgray") +
+  geom_sf(data = denver_crs, aes(color = factor(victim_race)), 
+          show.legend = 'point') +
+  facet_wrap(~disposition, ncol =1) +
+  ggtitle("Homicide cases in Denver, CO", subtitle = "by zipcode") +
+  labs(x = "Longitude", y = "Lattitude") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(colour = "Victim Race")
+  
+zip_map
+```
+
