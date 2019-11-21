@@ -2,7 +2,9 @@
 title: "hw5"
 author: "Sherry WeMott"
 date: "11/21/2019"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r, include = FALSE}
@@ -13,7 +15,7 @@ library(sf)
 ```
 
 
-```{r}
+```{r, include = FALSE}
 
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, error = FALSE)
 
@@ -32,15 +34,13 @@ denver_race <- denver %>%
   arrange(desc(count)) %>% 
   ungroup() %>% 
   filter(victim_race == c("Black", "White", "Hispanic"))  
-
-denver_race
 ```
 
 ```{r}
 # create zip code map
 denver_zip <- zctas(cb = TRUE, starts_with = 
                       c("802"), class = "sf")
-plot(denver_zip)
+
 ``` 
 
 ```{r}
@@ -59,7 +59,6 @@ denver_crs <- denver_disp %>%
   filter(!is.na(lat)) %>% 
   st_as_sf(coords = c("lon", "lat")) %>% 
   st_set_crs(4269)
-denver_crs
 ```
 ```{r}
 
