@@ -18,7 +18,7 @@ library(sf)
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, error = FALSE)
 
 # read in data
-denver <- read_csv("./data/homicide-data.csv") %>% 
+denver <- read_csv("../data/homicide-data.csv") %>% 
   filter(city == "Denver") %>% 
   select(lat, lon, disposition, victim_race)
 ```
@@ -43,3 +43,21 @@ denver_zip <- zctas(cb = TRUE, starts_with =
 plot(denver_zip)
 ``` 
 
+```{r}
+# categorize into solved and unsolved
+denver_disp <- denver_race %>% 
+  mutate(disposition = factor(disposition, levels = c("Closed without arrest", 
+                                                      "Closed by arrest", 
+                                                      "Open/No arrest"),
+                              labels = c("solved", "solved", "unsolved")))
+
+``` 
+
+```{r}
+# create dataframe of disposition status with geocode
+denver_crs <- denver_disp %>% 
+  filter(!is.na(lat)) %>% 
+  st_as_sf(coords = c("lon", "lat")) %>% 
+  st_set_crs(4269)
+denver_crs
+```
