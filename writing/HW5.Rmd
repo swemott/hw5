@@ -36,3 +36,10 @@ denver_race <- denver %>%
 denver_race
 ```
 
+```{r}
+# create zip code map
+denver_zip <- zctas(cb = TRUE, starts_with = 
+                      c("802"), class = "sf")
+plot(denver_zip)
+``` 
+
