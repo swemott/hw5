@@ -1,5 +1,5 @@
 ---
-title: "hw5"
+title: "ERHS 535 Homework 5"
 author: "Sherry WeMott"
 date: "11/21/2019"
 output:
@@ -16,7 +16,7 @@ library(ggthemes)
 ```
 
 
-```{r, echo=FALSE}
+```{r, results = 'hide'}
 
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, error = FALSE)
 
@@ -38,7 +38,7 @@ denver_race <- denver %>%
 ```
 
 
-```{r, echo=FALSE}
+```{r, results = 'hide'}
 # create zip code map
 denver_zip <- zctas(cb = TRUE, starts_with = 
                       c("802"), class = "sf")
@@ -63,7 +63,7 @@ denver_crs <- denver_disp %>%
 ```
 
 
-```{r, fig.width = 15, dpi = 300}
+```{r, fig.width = 7, fig.height = 8, dpi = 300}
 
 # create plot of homicides overlayed on denver map, faceted by race
 zip_map <- ggplot() +
@@ -71,8 +71,8 @@ zip_map <- ggplot() +
   geom_sf(data = denver_crs, aes(color = factor(victim_race)), 
           show.legend = 'point') +
   facet_wrap(~disposition, ncol =1) +
-  ggtitle("Homicide cases in Denver, CO", subtitle = "(map shows zipcode boundaries)") +
-  labs(x = "Longitude", y = "Lattitude") +
+  ggtitle("Homicide cases in Denver, CO 2007-2017", subtitle = "(map shows zipcode boundaries)") +
+  labs(x = "Longitude", y = "Latitude") +
   theme(axis.text.x = element_text(angle = 90, hjust = 1), 
         panel.background = element_blank(),
         axis.line = element_line(colour = "black")) +
