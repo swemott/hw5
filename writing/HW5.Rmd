@@ -12,10 +12,11 @@ output:
 library(tidyverse)
 library(tigris)
 library(sf)
+library(ggthemes)
 ```
 
 
-```{r, include = FALSE}
+```{r, echo=FALSE}
 
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, error = FALSE)
 
@@ -36,11 +37,11 @@ denver_race <- denver %>%
   filter(victim_race == c("Black", "White", "Hispanic"))  
 ```
 
-```{r}
+
+```{r, echo=FALSE}
 # create zip code map
 denver_zip <- zctas(cb = TRUE, starts_with = 
                       c("802"), class = "sf")
-
 ``` 
 
 ```{r}
@@ -50,8 +51,8 @@ denver_disp <- denver_race %>%
                                                       "Closed by arrest", 
                                                       "Open/No arrest"),
                               labels = c("solved", "solved", "unsolved")))
-
 ``` 
+
 
 ```{r}
 # create dataframe of disposition status with geocode
@@ -60,18 +61,22 @@ denver_crs <- denver_disp %>%
   st_as_sf(coords = c("lon", "lat")) %>% 
   st_set_crs(4269)
 ```
-```{r}
 
-# create plot of homicides overlayed on denver map
+
+```{r, fig.width = 15, dpi = 300}
+
+# create plot of homicides overlayed on denver map, faceted by race
 zip_map <- ggplot() +
   geom_sf(data = denver_zip, color = "lightgray") +
   geom_sf(data = denver_crs, aes(color = factor(victim_race)), 
           show.legend = 'point') +
   facet_wrap(~disposition, ncol =1) +
-  ggtitle("Homicide cases in Denver, CO", subtitle = "by zipcode") +
+  ggtitle("Homicide cases in Denver, CO", subtitle = "(map shows zipcode boundaries)") +
   labs(x = "Longitude", y = "Lattitude") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  labs(colour = "Victim Race")
+  theme(axis.text.x = element_text(angle = 90, hjust = 1), 
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "black")) +
+  labs(colour = "Victim Race") 
   
 zip_map
 ```
